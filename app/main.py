@@ -66,6 +66,24 @@ class ResolverRequest(BaseModel):
 #   - readiness: ¿está listo para recibir tráfico? Debe verificar la BD.
 # Luego configurar livenessProbe/readinessProbe en el Deployment de EKS.
 
+# ─── SONDAS DE SALUD ─────────────────────────────────────────────────────────
+
+@app.get("/livez", tags=["health"])
+def liveness():
+    """Liveness probe: el proceso está vivo. Kubernetes reinicia el pod si falla."""
+    return {"status": "ok"}
+
+
+@app.get("/readyz", tags=["health"])
+def readiness():
+    try:
+        with conexion() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1")
+        return {"status": "ready"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"database not ready: {str(e)}")
+    
 
 @app.get("/api/apuestas/eventos")
 def listar_eventos():
