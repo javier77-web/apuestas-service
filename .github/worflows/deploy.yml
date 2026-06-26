@@ -1,4 +1,4 @@
-name: CI/CD Apuestas - Build, Push ECR y Deploy EKS
+name: CI/CD Apuestas -  Build, Push ECR y Deploy EKS
 
 on:
   push:
