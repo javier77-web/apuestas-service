@@ -29,7 +29,7 @@ CUOTA_COL = {"local": "cuota_local", "empate": "cuota_empate", "visita": "cuota_
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    esperar_bd()
+    await esperar_bd()
     init_schema()
     yield
 
